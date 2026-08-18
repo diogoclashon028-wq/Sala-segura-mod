@@ -1,0 +1,30 @@
+name: CI
+
+on: ["workflow_dispatch", "push"]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 6.0.x
+
+      - run: dotnet restore
+      - run: dotnet build -c Release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SafeZoneMod.dll
+          path: bin/Release/net6.0/SafeZoneMod.dll
+          retention-days: 7
