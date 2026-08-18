@@ -1,0 +1,60 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "SafeZoneMod/1.0.0": {
+        "dependencies": {
+          "AllOfUs.MiraAPI": "0.4.1",
+          "Reactor": "2.5.0-ci.371"
+        },
+        "runtime": {
+          "SafeZoneMod.dll": {}
+        }
+      },
+      "AllOfUs.MiraAPI/0.4.1": {
+        "dependencies": {
+          "Reactor": "2.5.0-ci.371"
+        },
+        "runtime": {
+          "lib/net6.0/MiraAPI.dll": {
+            "assemblyVersion": "0.4.1.0",
+            "fileVersion": "0.4.1.0"
+          }
+        }
+      },
+      "Reactor/2.5.0-ci.371": {
+        "runtime": {
+          "lib/net6.0/Reactor.dll": {
+            "assemblyVersion": "2.5.0.0",
+            "fileVersion": "2.5.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "SafeZoneMod/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AllOfUs.MiraAPI/0.4.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Dt+EjS5e7N/oRVwXE0eXoBldKa+r8qVccwRELBP2N3+6Sr53oHwGxAhbcIeYPPwO0abpkpiVgmrzl/np0/G2RQ==",
+      "path": "allofus.miraapi/0.4.1",
+      "hashPath": "allofus.miraapi.0.4.1.nupkg.sha512"
+    },
+    "Reactor/2.5.0-ci.371": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LMKHi2CPACJJkBK117HT6zKS8mkv1c/RUZusYlnFExS2nGCD/haqf+YkTXyK561T5+BSg0m0R4ubSG30cdYDNg==",
+      "path": "reactor/2.5.0-ci.371",
+      "hashPath": "reactor.2.5.0-ci.371.nupkg.sha512"
+    }
+  }
+}

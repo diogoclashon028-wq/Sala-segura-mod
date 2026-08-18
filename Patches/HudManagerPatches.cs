@@ -33,7 +33,7 @@ namespace SafeZoneMod.Patches
             var hud = HudManager.Instance;
             if (hud == null) return;
 
-            hud.Notifier.AddDisconnectedMessage($"{target.Data.PlayerName} está protegido");
+            SafeZoneModPlugin.Log.LogInfo($"{target.Data.PlayerName} está protegido (kill bloqueado)");
         }
     }
 }

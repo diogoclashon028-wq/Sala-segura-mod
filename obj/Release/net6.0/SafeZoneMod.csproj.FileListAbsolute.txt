@@ -1,0 +1,13 @@
+/workspaces/Sala-segura-mod/obj/Release/net6.0/SafeZoneMod.csproj.AssemblyReference.cache
+/workspaces/Sala-segura-mod/obj/Release/net6.0/SafeZoneMod.GeneratedMSBuildEditorConfig.editorconfig
+/workspaces/Sala-segura-mod/obj/Release/net6.0/SafeZoneMod.AssemblyInfoInputs.cache
+/workspaces/Sala-segura-mod/obj/Release/net6.0/SafeZoneMod.AssemblyInfo.cs
+/workspaces/Sala-segura-mod/obj/Release/net6.0/SafeZoneMod.csproj.CoreCompileInputs.cache
+/workspaces/Sala-segura-mod/obj/Release/net6.0/SafeZoneMod.sourcelink.json
+/workspaces/Sala-segura-mod/bin/Release/net6.0/SafeZoneMod.deps.json
+/workspaces/Sala-segura-mod/bin/Release/net6.0/SafeZoneMod.dll
+/workspaces/Sala-segura-mod/bin/Release/net6.0/SafeZoneMod.pdb
+/workspaces/Sala-segura-mod/obj/Release/net6.0/SafeZoneMod.dll
+/workspaces/Sala-segura-mod/obj/Release/net6.0/refint/SafeZoneMod.dll
+/workspaces/Sala-segura-mod/obj/Release/net6.0/SafeZoneMod.pdb
+/workspaces/Sala-segura-mod/obj/Release/net6.0/ref/SafeZoneMod.dll
