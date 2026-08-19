@@ -14,7 +14,6 @@ namespace SafeZoneMod.Components
             _text.fontSize = 2.2f;
             _text.color = Color.cyan;
             _text.alignment = TextAlignmentOptions.TopLeft;
-
             var rect = _text.rectTransform;
             rect.SetParent(HudManager.Instance.transform, false);
             rect.anchoredPosition = new Vector2(-3.7f, 2.6f);
@@ -23,20 +22,19 @@ namespace SafeZoneMod.Components
         private void Update()
         {
             var local = PlayerControl.LocalPlayer;
-            if (local == null)
+            if (local == null) { _text.text = ""; return; }
+
+            var room = SafeZoneManager.GetClaimedRoom(local.PlayerId);
+            if (room == null)
             {
-                _text.text = "";
+                _text.text = SafeZoneManager.SelectionPhaseOpen ? "Escolha uma sala!" : "";
                 return;
             }
 
-            var remaining = SafeZoneManager.GetRemainingTime(local.PlayerId);
-
-            _text.text = remaining switch
-            {
-                null => "",
-                < 0f => "PROTEGIDO",
-                _ => $"PROTEGIDO ({remaining:0}s)"
-            };
+            var pos = local.GetTruePosition();
+            _text.text = room.Value.Contains(pos.x, pos.y)
+                ? $"PROTEGIDO ({room.Value.Name})"
+                : $"Sala: {room.Value.Name}";
         }
     }
 }

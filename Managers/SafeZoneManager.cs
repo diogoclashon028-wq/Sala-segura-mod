@@ -1,71 +1,44 @@
 using System.Collections.Generic;
-using UnityEngine;
+using SafeZoneMod.Data;
 
 namespace SafeZoneMod.Managers
 {
     public static class SafeZoneManager
     {
-        private static readonly Dictionary<byte, float> PlayersInZone = new();
+        private static readonly Dictionary<byte, RoomZone> ClaimedRooms = new();
+
+        public static bool SelectionPhaseOpen { get; set; }
 
         public static void Reset()
         {
-            PlayersInZone.Clear();
+            ClaimedRooms.Clear();
+            SelectionPhaseOpen = true;
         }
 
-        public static void OnPlayerEnter(byte playerId)
-        {
-            if (!SafeZoneModPlugin.SafeZoneEnabled.Value) return;
+        public static void SetClaimedRoom(byte playerId, RoomZone room) =>
+            ClaimedRooms[playerId] = room;
 
-            if (!PlayersInZone.ContainsKey(playerId))
-            {
-                PlayersInZone[playerId] = Time.time;
-            }
-        }
+        public static RoomZone? GetClaimedRoom(byte playerId) =>
+            ClaimedRooms.TryGetValue(playerId, out var room) ? room : null;
 
-        public static void OnPlayerExit(byte playerId)
+        public static bool IsProtected(byte playerId, float x, float y)
         {
-            PlayersInZone.Remove(playerId);
+            if (!SafeZoneModPlugin.SafeZoneEnabled.Value) return false;
+            if (!ClaimedRooms.TryGetValue(playerId, out var room)) return false;
+            return room.Contains(x, y);
         }
 
         public static bool IsProtected(byte playerId)
         {
-            if (!SafeZoneModPlugin.SafeZoneEnabled.Value) return false;
-            if (!PlayersInZone.TryGetValue(playerId, out var enteredAt)) return false;
-
-            var maxStay = SafeZoneModPlugin.MaxStayDuration.Value;
-            if (maxStay <= 0f) return true;
-
-            return Time.time - enteredAt <= maxStay;
-        }
-
-        public static float? GetRemainingTime(byte playerId)
-        {
-            if (!PlayersInZone.TryGetValue(playerId, out var enteredAt)) return null;
-
-            var maxStay = SafeZoneModPlugin.MaxStayDuration.Value;
-            if (maxStay <= 0f) return -1f;
-
-            var remaining = maxStay - (Time.time - enteredAt);
-            return remaining > 0f ? remaining : null;
-        }
-
-        public static void Tick()
-        {
-            var maxStay = SafeZoneModPlugin.MaxStayDuration.Value;
-            if (maxStay <= 0f || PlayersInZone.Count == 0) return;
-
-            List<byte>? expirados = null;
-            foreach (var kvp in PlayersInZone)
+            foreach (var p in PlayerControl.AllPlayerControls)
             {
-                if (Time.time - kvp.Value > maxStay)
+                if (p.PlayerId == playerId)
                 {
-                    expirados ??= new List<byte>();
-                    expirados.Add(kvp.Key);
+                    var pos = p.GetTruePosition();
+                    return IsProtected(playerId, pos.x, pos.y);
                 }
             }
-
-            if (expirados == null) return;
-            foreach (var id in expirados) PlayersInZone.Remove(id);
+            return false;
         }
     }
 }

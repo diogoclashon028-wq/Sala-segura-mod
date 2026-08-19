@@ -23,16 +23,14 @@ namespace SafeZoneMod
         public string OptionsTitleText => "Safe Zone";
         public ConfigFile GetConfigFile() => Config;
         public static ConfigEntry<bool> SafeZoneEnabled = null!;
-        public static ConfigEntry<float> SafeZoneRadius = null!;
-        public static ConfigEntry<float> MaxStayDuration = null!;
+        public static ConfigEntry<float> SelectionWindowSeconds = null!;
         private readonly Harmony _harmony = new(Id);
 
         public override void Load()
         {
             Instance = this;
             SafeZoneEnabled = Config.Bind("Geral", "Ativar Zona Segura", true, "");
-            SafeZoneRadius = Config.Bind("Geral", "Raio da Zona", 2.5f, "");
-            MaxStayDuration = Config.Bind("Geral", "Tempo max de permanencia (s)", 15f, "");
+            SelectionWindowSeconds = Config.Bind("Geral", "Tempo para escolher sala (s)", 20f, "");
             _harmony.PatchAll();
             Log.LogInfo($"{Name} v{Version} carregado");
         }

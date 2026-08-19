@@ -8,12 +8,11 @@ namespace SafeZoneMod.Patches
     {
         [HarmonyPatch(nameof(PlayerControl.CheckMurder))]
         [HarmonyPrefix]
-        public static bool CheckMurder_Prefix(PlayerControl target)
+        public static bool CheckMurder_Prefix(PlayerControl __instance, PlayerControl target)
         {
             if (target?.Data == null) return true;
-            if (!SafeZoneManager.IsProtected(target.PlayerId)) return true;
-
-            return false;
+            var pos = target.GetTruePosition();
+            return !SafeZoneManager.IsProtected(target.PlayerId, pos.x, pos.y);
         }
 
         [HarmonyPatch(nameof(PlayerControl.MurderPlayer))]
@@ -21,7 +20,8 @@ namespace SafeZoneMod.Patches
         public static bool MurderPlayer_Prefix(PlayerControl target)
         {
             if (target?.Data == null) return true;
-            return !SafeZoneManager.IsProtected(target.PlayerId);
+            var pos = target.GetTruePosition();
+            return !SafeZoneManager.IsProtected(target.PlayerId, pos.x, pos.y);
         }
     }
 }
