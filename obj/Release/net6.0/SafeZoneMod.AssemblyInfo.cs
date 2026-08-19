@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SafeZoneMod")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b2c2094651eac00f854c2daac688a07d10509f83")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1552482f7520a9b720992bca78935fa816b0ebcb")]
 [assembly: System.Reflection.AssemblyProductAttribute("SafeZoneMod")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SafeZoneMod")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
