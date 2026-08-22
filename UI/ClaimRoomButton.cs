@@ -1,6 +1,5 @@
 using MiraAPI.Hud;
 using MiraAPI.Utilities.Assets;
-using SafeZoneMod.Data;
 using SafeZoneMod.Managers;
 using SafeZoneMod.Rpc;
 using UnityEngine;
@@ -12,22 +11,23 @@ namespace SafeZoneMod.UI
         public static bool TryClaimCurrentRoom()
         {
             var player = PlayerControl.LocalPlayer;
-            if (player == null || !SafeZoneManager.SelectionPhaseOpen) return false;
+            if (player == null) return false;
 
-            byte mapId = (byte)ShipStatus.Instance.Type;
-            if (!MapRooms.Rooms.TryGetValue(mapId, out var rooms)) return false;
+            if (!SafeZoneManager.SelectionPhaseOpen)
+            {
+                SafeZoneModPlugin.Log.LogInfo("Reivindicar Sala: clique ignorado, fora da janela de seleção.");
+                return false;
+            }
 
             var pos = player.GetTruePosition();
-            for (int i = 0; i < rooms.Count; i++)
-            {
-                if (rooms[i].Contains(pos.x, pos.y))
-                {
-                    SafeZoneManager.SetClaimedRoom(player.PlayerId, rooms[i]);
-                    Reactor.Networking.Rpc.Rpc<ClaimRoomRpc>.Instance.Send((mapId, (byte)i));
-                    return true;
-                }
-            }
-            return false;
+            var room = RoomRegistry.FindRoomAt(pos.x, pos.y);
+            if (room == null) return false;
+
+            if (SafeZoneManager.IsRoomFull(room.RoomId, player.PlayerId)) return false;
+
+            SafeZoneManager.SetClaimedRoom(player.PlayerId, room.RoomId);
+            Reactor.Networking.Rpc.Rpc<ClaimRoomRpc>.Instance.Send((byte)room.RoomId);
+            return true;
         }
     }
 

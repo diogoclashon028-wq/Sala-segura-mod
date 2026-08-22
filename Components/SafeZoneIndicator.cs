@@ -24,17 +24,38 @@ namespace SafeZoneMod.Components
             var local = PlayerControl.LocalPlayer;
             if (local == null) { _text.text = ""; return; }
 
-            var room = SafeZoneManager.GetClaimedRoom(local.PlayerId);
-            if (room == null)
+            var claimed = SafeZoneManager.GetClaimedRoom(local.PlayerId);
+            var pos = local.GetTruePosition();
+
+            if (claimed == null)
             {
-                _text.text = SafeZoneManager.SelectionPhaseOpen ? "Escolha uma sala!" : "";
+                if (!SafeZoneManager.SelectionPhaseOpen) { _text.text = ""; return; }
+
+                var here = RoomRegistry.FindRoomAt(pos.x, pos.y);
+                if (here != null)
+                {
+                    bool full = SafeZoneManager.IsRoomFull(here.RoomId, local.PlayerId);
+                    _text.text = full ? $"Sala: {here.RoomId} X LOTADA" : $"Sala: {here.RoomId}";
+                    return;
+                }
+
+                _text.text = "Escolha uma sala!";
                 return;
             }
 
-            var pos = local.GetTruePosition();
-            _text.text = room.Value.Contains(pos.x, pos.y)
-                ? $"PROTEGIDO ({room.Value.Name})"
-                : $"Sala: {room.Value.Name}";
+            var room = RoomRegistry.FindRoomById(claimed.Value);
+            bool inside = room != null && room.roomArea.OverlapPoint(new Vector2(pos.x, pos.y));
+
+            if (!inside)
+            {
+                _text.text = $"Sala: {claimed.Value}";
+                return;
+            }
+
+            var remaining = SafeZoneManager.GetRemainingStaySeconds(local.PlayerId);
+            _text.text = remaining == null
+                ? $"PROTEGIDO ({claimed.Value})"
+                : $"PROTEGIDO ({claimed.Value}) - {remaining:F0}s";
         }
     }
 }

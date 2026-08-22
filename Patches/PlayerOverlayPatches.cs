@@ -15,6 +15,8 @@ namespace SafeZoneMod.Patches
         {
             if (!SafeZoneModPlugin.SafeZoneEnabled.Value) return;
 
+            SafeZoneManager.Tick();
+
             foreach (var p in PlayerControl.AllPlayerControls)
             {
                 if (p == null || p.Data == null) continue;
